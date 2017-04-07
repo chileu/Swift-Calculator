@@ -10,7 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var sequence: UILabel!
     
@@ -34,7 +33,7 @@ class ViewController: UIViewController {
             
             let textCurrentlyInDisplay = display.text!
             
-            if digit == "." && (textCurrentlyInDisplay.range(of: ".") != nil) { return }
+            if digit == "." && textCurrentlyInDisplay.contains(".") { return }
             if digit == "0" && textCurrentlyInDisplay == "0" { return }
             
             display.text = textCurrentlyInDisplay + digit
@@ -42,10 +41,6 @@ class ViewController: UIViewController {
         } else {
             display.text = (digit == "." ? "0" : "") + digit
             userIsInTheMiddleOfTyping = true
-        }
-        
-        if brain.resultIsPending == false {
-            brain.description = " "
         }
         
     }
@@ -68,22 +63,25 @@ class ViewController: UIViewController {
         
         if let mathSymbol = sender.currentTitle {
             brain.performOperation(mathSymbol)
-            sequence.text = brain.description + (brain.resultIsPending ? " ..." : " =")
         }
         
         if let result = brain.result {
             displayValue = result
         }
+        
+        if let description = brain.description {
+            sequence.text = description + (brain.resultIsPending ? "..." : "=")
+        } else {
+            sequence.text = " "
+        }
+        
     }
     
     @IBAction func clearPressed(_ sender: UIButton) {
-        // clear the UI
+        brain = CalculatorBrain()
         displayValue = 0
         sequence.text = " "
         userIsInTheMiddleOfTyping = false
-        
-        // clear the model's vars
-        brain.clearHistory()
         
     }
     
