@@ -10,44 +10,52 @@ import Foundation
 
 struct CalculatorBrain {
     
-    private var accumulator: Double?
-    private var lastDescription: String?
+    private var accumulator: (Double, String)?
     
     var resultIsPending: Bool {
         return pendingBinaryOperation != nil
     }
     
-    lazy var description = String()
-    
-    var result: Double? {
-        get {
-            return accumulator
+    var description: String? {
+        if resultIsPending {
+            return pendingBinaryOperation!.description(pendingBinaryOperation!.firstOperand.1, accumulator?.1 ?? "")
+        } else {
+            return accumulator?.1
         }
     }
     
-    // enum is a data structure with discrete values
-    // optional is an enum too. in set state, has associated value. in not set state, does not have associated value.
+    var result: Double? {
+        if accumulator != nil {
+            return accumulator!.0
+        } else {
+            return nil
+        }
+    }
+    
     private enum Operation {
         case constant(Double)
-        case unaryOperation((Double) -> Double)
-        case binaryOperation((Double, Double) -> Double)
+        case unaryOperation((Double) -> Double, (String) -> String)
+        case binaryOperation((Double, Double) -> Double, (String, String) -> String)
         case equals
     }
     
     private var operations: Dictionary<String, Operation> = [
         "π" : Operation.constant(Double.pi),
         "e": Operation.constant(M_E),
-        "√" : Operation.unaryOperation(sqrt),
-        "cos" : Operation.unaryOperation(cos),
-        "sin" : Operation.unaryOperation(sin),
-        "log" : Operation.unaryOperation(log10),
-        "±" : Operation.unaryOperation({ -$0 }),
-        "%" : Operation.binaryOperation({ $0.truncatingRemainder(dividingBy: $1) }),
-        "x^y" : Operation.binaryOperation({ pow($0, $1) }),
-        "×" : Operation.binaryOperation({ $0 * $1 }),
-        "÷" : Operation.binaryOperation({ $0 / $1 }),
-        "+" : Operation.binaryOperation({ $0 + $1 }),
-        "−" : Operation.binaryOperation({ $0 - $1 }),
+        
+        "√" : Operation.unaryOperation({ sqrt($0) }, { "√(" + $0 + ")"}),
+        "cos" : Operation.unaryOperation({ cos($0) }, { "cos(" + $0 + ")" }),
+        "sin" : Operation.unaryOperation({ sin($0) }, { "sin(" + $0 + ")" }),
+        "log" : Operation.unaryOperation({ log10($0) }, { "log(" + $0 + ")" }),
+        "±" : Operation.unaryOperation({ -$0 }, { "-" + $0 }),
+        
+        "%" : Operation.binaryOperation({ $0.truncatingRemainder(dividingBy: $1) }, { $0 + "%" + $1}),
+        "x^y" : Operation.binaryOperation({ pow($0, $1) }, { $0 + "^" + $1 }),
+        "×" : Operation.binaryOperation({ $0 * $1 }, { $0 + "x" + $1 }),
+        "÷" : Operation.binaryOperation({ $0 / $1 }, { $0 + "÷" + $1 }),
+        "+" : Operation.binaryOperation({ $0 + $1 }, { $0 + "+" + $1 }),
+        "−" : Operation.binaryOperation({ $0 - $1 }, { $0 + "-" + $1 }),
+        
         "=" : Operation.equals,
         ]
     
@@ -55,23 +63,15 @@ struct CalculatorBrain {
         if let operation = operations[symbol] {
             switch operation {
             case .constant(let value):
-                accumulator = value
-                description = description + symbol
-            case .unaryOperation(let function):
-                if accumulator != nil, let lastDescription = lastDescription {
-                    if resultIsPending == true {
-                        let formattedAccumulator = String(format: "%g", accumulator!)
-                        description = lastDescription + symbol + "(\(formattedAccumulator))"
-                    } else {
-                        description = symbol + "(\(description))"
-                    }
-                    accumulator = function(accumulator!)
+                accumulator = (value, symbol)
+            case .unaryOperation(let function, let description):
+                if accumulator != nil {
+                    accumulator = (function(accumulator!.0), description(accumulator!.1))
                 }
-            case .binaryOperation(let function):
+            case .binaryOperation(let function, let description):
                 if accumulator != nil {
                     performPendingBinaryOperation()
-                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
-                    description += symbol
+                    pendingBinaryOperation = PendingBinaryOperation(function: function, description: description, firstOperand: accumulator!)
                     accumulator = nil
                 }
             case .equals:
@@ -93,24 +93,16 @@ struct CalculatorBrain {
     
     private struct PendingBinaryOperation {
         let function: (Double, Double) -> Double
-        var firstOperand: Double
+        let description: (String, String) -> String
+        var firstOperand: (Double, String)
         
-        func perform(with secondOperand: Double) -> Double {
-            return function(firstOperand, secondOperand)
+        func perform(with secondOperand: (Double, String)) -> (Double, String) {
+            return (function(firstOperand.0, secondOperand.0), description(firstOperand.1, secondOperand.1))
         }
     }
     
     mutating func setOperand(_ operand: Double) {
-        accumulator = operand
-        lastDescription = description
-        description = description + String(format: "%g", operand)
-    }
-    
-    mutating func clearHistory() {
-        accumulator = nil
-        description = " "
-        lastDescription = nil
-        pendingBinaryOperation = nil
+        accumulator = (operand, String(format: "%g", operand))
     }
     
 }

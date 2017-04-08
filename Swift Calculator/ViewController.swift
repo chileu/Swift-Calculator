@@ -44,10 +44,6 @@ class ViewController: UIViewController {
             userIsInTheMiddleOfTyping = true
         }
         
-        if brain.resultIsPending == false {
-            brain.description = " "
-        }
-        
     }
     
     // this does not belong in the Model; UI related
@@ -68,7 +64,9 @@ class ViewController: UIViewController {
         
         if let mathSymbol = sender.currentTitle {
             brain.performOperation(mathSymbol)
-            sequence.text = brain.description + (brain.resultIsPending ? " ..." : " =")
+            if let description = brain.description {
+                sequence.text = description + (brain.resultIsPending ? " ..." : " =")
+            }
         }
         
         if let result = brain.result {
@@ -82,8 +80,8 @@ class ViewController: UIViewController {
         sequence.text = " "
         userIsInTheMiddleOfTyping = false
         
-        // clear the model's vars
-        brain.clearHistory()
+        // clear the Model
+        brain = CalculatorBrain()
         
     }
     
