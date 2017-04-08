@@ -54,23 +54,18 @@ struct CalculatorBrain {
                 accumulator = value
                 description = description + symbol
             case .unaryOperation(let function):
-                if let operand = accumulator {
-                    
-                    if resultIsPending == true {
-                        let formattedAccumulator = String(format: "%g", operand)
-                        if let lastDescription = lastDescription {
-                            description = lastDescription + symbol + "(\(formattedAccumulator))"
-                        }
+                if accumulator != nil {
+                    let formattedAccumulator = String(format: "%g", accumulator!)
+                    if let lastDescription = lastDescription {
+                        description = lastDescription + symbol + "(\(formattedAccumulator))"
                         resultIsPending = false
-                    } else {
-                        description = symbol + "(\(description))"
+                        accumulator = function(accumulator!)
                     }
-                    accumulator = function(operand)
                 }
             case .binaryOperation(let function):
-                if let operand = accumulator {
+                if accumulator != nil {
                     performPendingBinaryOperation()
-                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: operand)
+                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     description += symbol
                     resultIsPending = true
                     accumulator = nil
@@ -101,14 +96,6 @@ struct CalculatorBrain {
             return function(firstOperand, secondOperand)
         }
     }
-    
-    //mutating func setOperand(variable named: String) {
-        
-    //}
-    
-    //func evaluate(using variables: Dictionary<String, Double>? = nil) -> (result: Double?, isPending: Bool, description: String) {
-        
-    //}
     
     mutating func setOperand(_ operand: Double) {
         accumulator = operand
