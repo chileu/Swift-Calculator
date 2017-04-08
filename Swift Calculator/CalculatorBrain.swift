@@ -79,6 +79,7 @@ struct CalculatorBrain {
                     pendingBinaryOperation = PendingBinaryOperation(function: function, description: description, firstOperand: accumulator!)
                     accumulator = nil
                 }
+        
             case .equals:
                 performPendingBinaryOperation()
             }
