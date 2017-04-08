@@ -54,13 +54,15 @@ struct CalculatorBrain {
                 accumulator = value
                 description = description + symbol
             case .unaryOperation(let function):
-                if accumulator != nil {
-                    let formattedAccumulator = String(format: "%g", accumulator!)
-                    if let lastDescription = lastDescription {
+                if accumulator != nil, let lastDescription = lastDescription {
+                    if resultIsPending == true {
+                        let formattedAccumulator = String(format: "%g", accumulator!)
                         description = lastDescription + symbol + "(\(formattedAccumulator))"
                         resultIsPending = false
-                        accumulator = function(accumulator!)
+                    } else {
+                        description = symbol + "(\(description))"
                     }
+                    accumulator = function(accumulator!)
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
