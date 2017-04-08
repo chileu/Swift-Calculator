@@ -12,7 +12,11 @@ struct CalculatorBrain {
     
     private var accumulator: Double?
     private var lastDescription: String?
-    lazy var resultIsPending = false
+    
+    var resultIsPending: Bool {
+        return pendingBinaryOperation != nil
+    }
+    
     lazy var description = String()
     
     var result: Double? {
@@ -58,7 +62,6 @@ struct CalculatorBrain {
                     if resultIsPending == true {
                         let formattedAccumulator = String(format: "%g", accumulator!)
                         description = lastDescription + symbol + "(\(formattedAccumulator))"
-                        resultIsPending = false
                     } else {
                         description = symbol + "(\(description))"
                     }
@@ -69,13 +72,10 @@ struct CalculatorBrain {
                     performPendingBinaryOperation()
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     description += symbol
-                    resultIsPending = true
                     accumulator = nil
                 }
             case .equals:
                 performPendingBinaryOperation()
-                resultIsPending = false
-                pendingBinaryOperation = nil
             }
             
         }
@@ -85,6 +85,7 @@ struct CalculatorBrain {
     mutating private func performPendingBinaryOperation() {
         if pendingBinaryOperation != nil && accumulator != nil {
             accumulator = pendingBinaryOperation?.perform(with: accumulator!)
+            pendingBinaryOperation = nil
         }
     }
     
@@ -107,7 +108,6 @@ struct CalculatorBrain {
     
     mutating func clearHistory() {
         accumulator = nil
-        resultIsPending = false
         description = " "
         lastDescription = nil
         pendingBinaryOperation = nil
