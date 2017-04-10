@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sequence.text = " "
+        //sequence.text = " "
     }
     
     @IBAction func keyPressed(_ sender: UIButton) {
@@ -53,6 +53,17 @@ class ViewController: UIViewController {
         }
         set {
             display.text = String(newValue)
+            sequence.text = String(newValue)
+        }
+    }
+    
+    var variableDictionary = Dictionary<String, Double>()
+    var displayResult: (result: Double?, isPending: Bool, description: String) = (nil, false, "") {
+        didSet {
+            switch displayResult {
+                case (let result, _, _): displayValue = result ?? 0
+            }
+            sequence.text = displayResult.description != "" ? displayResult.description + (displayResult.isPending ? " ..." : " =") : ""
         }
     }
     
@@ -64,14 +75,23 @@ class ViewController: UIViewController {
         
         if let mathSymbol = sender.currentTitle {
             brain.performOperation(mathSymbol)
-            if let description = brain.description {
-                sequence.text = description + (brain.resultIsPending ? " ..." : " =")
-            }
         }
         
-        if let result = brain.result {
-            displayValue = result
-        }
+        displayResult = brain.evaluate(using: variableDictionary)
+    }
+    
+    // ->M button pressed
+    @IBAction func setM(_ sender: UIButton) {
+        userIsInTheMiddleOfTyping = false
+        let symbol = String(sender.currentTitle!.characters.dropFirst())
+        variableDictionary[symbol] = displayValue
+        displayResult = brain.evaluate(using: variableDictionary)
+    }
+    
+    // M button pressed
+    @IBAction func pushM(_ sender: UIButton) {
+        brain.setOperand(variable: sender.currentTitle!)
+        displayResult = brain.evaluate(using: variableDictionary)
     }
     
     @IBAction func clearPressed(_ sender: UIButton) {
@@ -82,6 +102,9 @@ class ViewController: UIViewController {
         
         // clear the Model
         brain = CalculatorBrain()
+        
+        // clear memory
+        variableDictionary = [:]
         
     }
     
