@@ -10,7 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var sequence: UILabel!
     
@@ -56,6 +55,8 @@ class ViewController: UIViewController {
         }
     }
     
+    lazy var variableDictionary = [String: Double]()
+    
     @IBAction func performOperation(_ sender: UIButton) {
         if userIsInTheMiddleOfTyping {
             brain.setOperand(displayValue)
@@ -64,16 +65,34 @@ class ViewController: UIViewController {
         
         if let mathSymbol = sender.currentTitle {
             brain.performOperation(mathSymbol)
-            if let description = brain.description {
-                sequence.text = description + (brain.resultIsPending ? " ..." : " =")
-            }
+            sequence.text = brain.evaluate(using: variableDictionary).description
         }
         
-        if let result = brain.result {
+        if let result = brain.evaluate(using: variableDictionary).result {
             displayValue = result
         }
     }
     
+    // press "M"
+    @IBAction func assignM(_ sender: UIButton) {
+        brain.setOperand(variable: sender.currentTitle!)
+        if let result = brain.evaluate(using: variableDictionary).result {
+            displayValue = result
+        }
+        sequence.text = brain.evaluate(using: variableDictionary).description
+    }
+    
+    // press "->M"
+    @IBAction func setM(_ sender: UIButton) {
+        let symbol = String((sender.currentTitle!).characters.dropFirst())
+        variableDictionary[symbol] = displayValue
+        if let result = brain.evaluate(using: variableDictionary).result {
+            displayValue = result
+        }
+        sequence.text = brain.evaluate(using: variableDictionary).description
+    }
+    
+
     @IBAction func clearPressed(_ sender: UIButton) {
         // clear the UI
         displayValue = 0
