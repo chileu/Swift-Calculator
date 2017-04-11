@@ -19,19 +19,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //sequence.text = " "
+        adjustButtonLayout(for: view, isPortrait: traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular)
+    }
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        adjustButtonLayout(for: view, isPortrait: newCollection.horizontalSizeClass == .compact && newCollection.verticalSizeClass == .regular)
     }
     
     @IBAction func keyPressed(_ sender: UIButton) {
         let digit = sender.currentTitle!
         
         if userIsInTheMiddleOfTyping {
-            guard let digitCount = display.text?.characters.count , digitCount < 17 else {
-                print("digit count is too high")
-                return
-            }
-            
             let textCurrentlyInDisplay = display.text!
             
             if digit == "." && (textCurrentlyInDisplay.range(of: ".") != nil) { return }
@@ -52,8 +51,7 @@ class ViewController: UIViewController {
             return Double(display.text!)!
         }
         set {
-            display.text = String(newValue)
-            sequence.text = String(newValue)
+            display.text = formatter.string(from: NSNumber(value: newValue))
         }
     }
     
@@ -106,6 +104,26 @@ class ViewController: UIViewController {
         // clear memory
         variableDictionary = [:]
         
+    }
+    
+    @IBAction func backPressed(_ sender: UIButton) {
+        if userIsInTheMiddleOfTyping {
+            if var text = display.text {
+                text.remove(at: text.index(before: text.endIndex))
+                display.text = text
+            }
+        }
+    }
+    
+    private func adjustButtonLayout(for view: UIView, isPortrait: Bool) {
+        for subview in view.subviews {
+            if subview.tag == 1 {
+                subview.isHidden = isPortrait
+            }
+            if let stack = subview as? UIStackView {
+                adjustButtonLayout(for: stack, isPortrait: isPortrait)
+            }
+        }
     }
     
 }

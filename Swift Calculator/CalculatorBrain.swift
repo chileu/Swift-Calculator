@@ -35,6 +35,7 @@ struct CalculatorBrain {
     
     private enum Operation {
         case constant(Double)
+        case nullaryOperation(() -> Double, () -> String)
         case unaryOperation((Double) -> Double, (String) -> String)
         case binaryOperation((Double, Double) -> Double, (String, String) -> String)
         case equals
@@ -44,10 +45,16 @@ struct CalculatorBrain {
         "π" : Operation.constant(Double.pi),
         "e": Operation.constant(M_E),
         
+        "rand": Operation.nullaryOperation({ Double(arc4random()) / Double(UInt32.max) }, { "rand()" }),
+        
         "√" : Operation.unaryOperation(sqrt, { "√(" + $0 + ")"}),
         "cos" : Operation.unaryOperation(cos, { "cos(" + $0 + ")" }),
         "sin" : Operation.unaryOperation(sin, { "sin(" + $0 + ")" }),
+        "tan" : Operation.unaryOperation(tan, { "tan(" + $0 + ")" }),
+        "cos⁻¹" : Operation.unaryOperation(acos, { "cos(" + $0 + ")⁻¹" }),
+        "sin⁻¹" : Operation.unaryOperation(asin, { "sin(" + $0 + ")⁻¹" }),
         "log" : Operation.unaryOperation(log10, { "log(" + $0 + ")" }),
+        "ln" : Operation.unaryOperation(log, { "ln(" + $0 + ")" }),       
         "±" : Operation.unaryOperation({ -$0 }, { "-" + $0 }),
         "x⁻¹" : Operation.unaryOperation({1.0 / $0}, {"(" + $0 + ")⁻¹"}),
         "х²" : Operation.unaryOperation({$0 * $0}, { "(" + $0 + ")²"}),
@@ -109,9 +116,8 @@ struct CalculatorBrain {
         
         // declare setOperand and performOperation functions
         func setOperand(_ operand: Double) {
-            accumulator = (operand, String(format: "%g", operand))
+            accumulator = (operand, formatter.string(from: NSNumber(value: operand))!)
         }
-        
         
         func setOperand(variable named: String) {
             accumulator = (variables?[named] ?? 0.0, named)
@@ -122,6 +128,8 @@ struct CalculatorBrain {
                 switch operation {
                 case .constant(let value):
                     accumulator = (value, symbol)
+                case .nullaryOperation(let function, let description):
+                    accumulator = (function(), description())
                 case .unaryOperation(let function, let description):
                     if accumulator != nil {
                         accumulator = (function(accumulator!.0), description(accumulator!.1))
@@ -177,6 +185,15 @@ struct CalculatorBrain {
     }
     
 }
+
+let formatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.maximumFractionDigits = 6
+    return formatter
+} ()
+
+
 
 // deprecated:
 //var resultIsPending: Bool {
