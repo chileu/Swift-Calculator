@@ -30,7 +30,6 @@ struct CalculatorBrain {
         internalProgram.append(OpStack.operand(operand))
     }
     
-    
     mutating func setOperand(variable named: String) {
         internalProgram.append(OpStack.variable(named))
     }
@@ -77,7 +76,7 @@ struct CalculatorBrain {
     
     
     func evaluate(using variables: Dictionary<String, Double>? = nil) -> (result: Double?, isPending: Bool, description: String, error: String?) {
-
+        
         // declare internal accumulator
         var accumulator: (Double, String)?
         
@@ -185,6 +184,8 @@ struct CalculatorBrain {
     
 }
 
+
+// () at the end of the closure means 'execute now'
 let formatter: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
