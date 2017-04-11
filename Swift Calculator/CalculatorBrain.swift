@@ -20,6 +20,12 @@ struct CalculatorBrain {
     
     private var accumulator: (Double, String)?
     
+    mutating func undoLast() {
+        if !internalProgram.isEmpty {
+            internalProgram.removeLast()
+        }
+    }
+    
     mutating func setOperand(_ operand: Double) {
         internalProgram.append(OpStack.operand(operand))
     }

@@ -13,12 +13,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var sequence: UILabel!
+    @IBOutlet weak var memoryLbl: UILabel!
     
     var userIsInTheMiddleOfTyping = false
     private var brain = CalculatorBrain()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        memoryLbl.isHidden = true
         adjustButtonLayout(for: view, isPortrait: traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular)
     }
     
@@ -58,10 +60,12 @@ class ViewController: UIViewController {
     var variableDictionary = Dictionary<String, Double>()
     var displayResult: (result: Double?, isPending: Bool, description: String) = (nil, false, "") {
         didSet {
-            switch displayResult {
-                case (let result, _, _): displayValue = result ?? 0
-            }
+            displayValue = displayResult.result ?? 0
             sequence.text = displayResult.description != "" ? displayResult.description + (displayResult.isPending ? " ..." : " =") : ""
+            if let mValue = variableDictionary["M"] {
+                memoryLbl.isHidden = false
+                memoryLbl.text = "M:" + formatter.string(from: NSNumber(value: mValue))!
+            }
         }
     }
     
@@ -83,6 +87,8 @@ class ViewController: UIViewController {
         userIsInTheMiddleOfTyping = false
         let symbol = String(sender.currentTitle!.characters.dropFirst())
         variableDictionary[symbol] = displayValue
+        //memoryLbl.isHidden = false
+        //memoryLbl.text = symbol + ":" + formatter.string(from: NSNumber(value:displayValue))!
         displayResult = brain.evaluate(using: variableDictionary)
     }
     
@@ -103,7 +109,7 @@ class ViewController: UIViewController {
         
         // clear memory
         variableDictionary = [:]
-        
+        memoryLbl.isHidden = true
     }
     
     @IBAction func backPressed(_ sender: UIButton) {
@@ -112,6 +118,9 @@ class ViewController: UIViewController {
                 text.remove(at: text.index(before: text.endIndex))
                 display.text = text
             }
+        } else {
+            brain.undoLast()
+            displayResult = brain.evaluate(using: variableDictionary)
         }
     }
     
