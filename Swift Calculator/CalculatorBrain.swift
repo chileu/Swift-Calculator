@@ -182,6 +182,22 @@ struct CalculatorBrain {
         
     }
     
+    //---------------------------------------------------------
+    @available(iOS, deprecated, message: "No longer needed")
+    var resultIsPending: Bool {
+        return evaluate().isPending
+    }
+    
+    @available(iOS, deprecated, message: "No longer needed")
+    var description: String? {
+        return evaluate().description
+    }
+    
+    @available(iOS, deprecated, message: "No longer needed")
+    var result: Double? {
+        return evaluate().result
+    }
+    
 }
 
 
@@ -195,15 +211,4 @@ let formatter: NumberFormatter = {
 
 
 
-// deprecated:
-//var resultIsPending: Bool {
-//    return evaluate().isPending
-//}
 
-//var description: String? {
-//    return evaluate().description
-//}
-
-//var result: Double? {
-//    return evaluate().result
-//}
