@@ -37,15 +37,12 @@ class GraphView: UIView {
     
     private func pathForOperation(_ yForX: ((Double) -> Double?)?) -> UIBezierPath {
         let path = UIBezierPath()
-        let numberOfUnitsOnXAxis = Double(bounds.size.width / pointsPerUnit)
-        let numberOfUnitsOnEitherSideOfXAxis = Double(numberOfUnitsOnXAxis / 2)
+        let unitsOnXAxis = Double(bounds.size.width / pointsPerUnit)
         let pixelIncrementor = 1 / Double(pointsPerUnit * contentScaleFactor)
         
         var origin: CGPoint? = nil
-        for i in stride(from: -numberOfUnitsOnEitherSideOfXAxis, through: numberOfUnitsOnEitherSideOfXAxis, by: pixelIncrementor) {
-            
+        for i in stride(from: -(unitsOnXAxis / 2), through: (unitsOnXAxis / 2), by: pixelIncrementor) {
             let value = yForX?(i) ?? 0
-            
             let nextCoordinatePoint = CGPoint(x: boundsCenter.x + (CGFloat(i) * pointsPerUnit), y: boundsCenter.y - (CGFloat(value) * pointsPerUnit))
             
             if origin != nil {
