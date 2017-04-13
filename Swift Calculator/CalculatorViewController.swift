@@ -18,8 +18,6 @@ class CalculatorViewController: UIViewController {
     var userIsInTheMiddleOfTyping = false
     private var brain = CalculatorBrain()
     
-    private var graphableOperations: [String]?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         memoryLbl.isHidden = true
@@ -141,11 +139,6 @@ class CalculatorViewController: UIViewController {
         }
     }
     
-    @IBAction func graphPressed(_ sender: UIButton) {
-        displayResult = brain.evaluate(using: variableDictionary)
-        print("display result: \(displayResult)")
-        
-    }
     
     
 }
