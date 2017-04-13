@@ -10,8 +10,12 @@ import UIKit
 
 class GraphViewController: UIViewController {
     
-    @IBOutlet weak var graphView: UIView!
-    
+    @IBOutlet weak var graphView: GraphView! {
+        didSet {
+            updateUI()
+        }
+    }
+
     var yForX: ((Double) -> Double?)? {
         didSet {
             updateUI()
@@ -19,7 +23,7 @@ class GraphViewController: UIViewController {
     }
     
     func updateUI() {
-        
+        graphView?.yForX = yForX
     }
 
     override func viewDidLoad() {

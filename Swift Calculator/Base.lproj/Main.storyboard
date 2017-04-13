@@ -524,7 +524,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="graphView" destination="dm5-tF-BNg" id="zL4-KY-KkJ"/>
+                        <outlet property="graphView" destination="dm5-tF-BNg" id="D7n-eR-WmN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPZ-F2-IQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
