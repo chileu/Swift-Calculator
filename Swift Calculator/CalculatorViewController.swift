@@ -10,7 +10,6 @@ import UIKit
 
 class CalculatorViewController: UIViewController {
     
-    
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var sequence: UILabel!
     @IBOutlet weak var memoryLbl: UILabel!
@@ -18,6 +17,8 @@ class CalculatorViewController: UIViewController {
     
     var userIsInTheMiddleOfTyping = false
     private var brain = CalculatorBrain()
+    
+    private var graphableOperations: [String]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,6 +140,13 @@ class CalculatorViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func graphPressed(_ sender: UIButton) {
+        displayResult = brain.evaluate(using: variableDictionary)
+        print("display result: \(displayResult)")
+        
+    }
+    
     
 }
 
