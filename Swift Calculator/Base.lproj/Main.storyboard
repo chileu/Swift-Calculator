@@ -104,7 +104,7 @@
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
-                                                            <segue destination="TOr-vm-gvb" kind="showDetail" identifier="ShowGraph" id="PgQ-XA-oFE"/>
+                                                            <segue destination="XtH-C7-voa" kind="showDetail" identifier="ShowGraph" id="PgQ-XA-oFE"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRi-tW-Ieo">
@@ -523,13 +523,14 @@
                             <constraint firstItem="dm5-tF-BNg" firstAttribute="leading" secondItem="jW3-Rc-qPY" secondAttribute="leading" id="sJN-eu-VHx"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="haW-t6-02Q"/>
                     <connections>
                         <outlet property="graphView" destination="dm5-tF-BNg" id="D7n-eR-WmN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPZ-F2-IQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="334" y="511"/>
+            <point key="canvasLocation" x="1272.8" y="510.49475262368821"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="yNc-HI-KqM">
@@ -537,7 +538,7 @@
                 <splitViewController id="nZj-Ld-sRf" sceneMemberID="viewController">
                     <connections>
                         <segue destination="vyU-zU-LvO" kind="relationship" relationship="masterViewController" id="Kzu-5l-RQP"/>
-                        <segue destination="TOr-vm-gvb" kind="relationship" relationship="detailViewController" id="Viy-cz-8Ey"/>
+                        <segue destination="XtH-C7-voa" kind="relationship" relationship="detailViewController" id="Viy-cz-8Ey"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="suV-UP-cyq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -562,8 +563,26 @@
             </objects>
             <point key="canvasLocation" x="333.60000000000002" y="-258.62068965517244"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="PWx-RB-ZqQ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XtH-C7-voa" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MHV-fx-uiC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="TOr-vm-gvb" kind="relationship" relationship="rootViewController" id="ADi-tK-QTM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DNb-Li-8vY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="333.60000000000002" y="510.49475262368821"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="PgQ-XA-oFE"/>
+        <segue reference="Viy-cz-8Ey"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -149,10 +149,12 @@ class CalculatorViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let identifier = segue.identifier,
-            identifier == "ShowGraph",
-            let vc = segue.destination as? GraphViewController {
-                prepareGraphVC(vc)
+        var destination = segue.destination
+        if let navigationController = destination as? UINavigationController {
+            destination = navigationController.visibleViewController ?? destination
+        }
+        if let identifier = segue.identifier, identifier == "ShowGraph", let vc = destination as? GraphViewController {
+            prepareGraphVC(vc)
         }
     }
     
