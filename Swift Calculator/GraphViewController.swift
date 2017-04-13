@@ -12,12 +12,21 @@ class GraphViewController: UIViewController {
     
     @IBOutlet weak var graphView: UIView!
     
+    var yForX: ((Double) -> Double?)? {
+        didSet {
+            updateUI()
+        }
+    }
+    
+    func updateUI() {
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
     }
+
 
 
     

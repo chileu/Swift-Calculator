@@ -26,17 +26,14 @@ struct CalculatorBrain {
     
     mutating func setOperand(_ operand: Double) {
         internalProgram.append(OpStack.operand(operand))
-        print(internalProgram)
     }
     
     mutating func setOperand(variable named: String) {
         internalProgram.append(OpStack.variable(named))
-        print(internalProgram)
     }
     
     mutating func performOperation(_ symbol: String) {
         internalProgram.append(OpStack.operation(symbol))
-        print(internalProgram)
     }
     
     private enum Operation {

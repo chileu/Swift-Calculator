@@ -13,7 +13,7 @@ class GraphView: UIView {
     
     var axes: AxesDrawer?
     
-    var operation: (Double) -> Double = { $0 * cos($0) }
+    var yForX: ((Double) -> Double?)?
     
     var boundsCenter: CGPoint {
         return CGPoint(x: bounds.midX, y: bounds.midY)
@@ -32,10 +32,10 @@ class GraphView: UIView {
         axes = AxesDrawer(color: axesColor, contentScaleFactor: contentScaleFactor)
         axes?.drawAxes(in: bounds, origin: boundsCenter, pointsPerUnit: pointsPerUnit)
         graphColor.set()
-        pathForOperation(operation).stroke()
+        pathForOperation(yForX).stroke()
     }
     
-    private func pathForOperation(_ operation: (Double) -> Double) -> UIBezierPath {
+    private func pathForOperation(_ yForX: ((Double) -> Double?)?) -> UIBezierPath {
         let path = UIBezierPath()
         let numberOfUnitsOnXAxis = Double(bounds.size.width / pointsPerUnit)
         let numberOfUnitsOnEitherSideOfXAxis = Double(numberOfUnitsOnXAxis / 2)
@@ -43,7 +43,9 @@ class GraphView: UIView {
         
         var origin: CGPoint? = nil
         for i in stride(from: -numberOfUnitsOnEitherSideOfXAxis, through: numberOfUnitsOnEitherSideOfXAxis, by: pixelIncrementor) {
-            let value = operation(i)
+            
+            let value = yForX?(i) ?? 0
+            
             let nextCoordinatePoint = CGPoint(x: boundsCenter.x + (CGFloat(i) * pointsPerUnit), y: boundsCenter.y - (CGFloat(value) * pointsPerUnit))
             
             if origin != nil {

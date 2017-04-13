@@ -139,6 +139,22 @@ class CalculatorViewController: UIViewController {
         }
     }
     
+    func prepareGraphVC(_ graphVC: GraphViewController) {
+        graphVC.yForX = { [ weak weakSelf = self] x in
+            weakSelf?.variableDictionary["M"] = x
+            return weakSelf?.brain.evaluate(using: weakSelf?.variableDictionary).result
+        }
+        graphVC.navigationItem.title =  "y = " +
+            brain.evaluate(using: variableDictionary).description
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier,
+            identifier == "ShowGraph",
+            let vc = segue.destination as? GraphViewController {
+                prepareGraphVC(vc)
+        }
+    }
     
     
 }
