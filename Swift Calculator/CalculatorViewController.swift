@@ -160,8 +160,17 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
             destination = navigationController.visibleViewController ?? destination
         }
         if let identifier = segue.identifier, identifier == "ShowGraph", let vc = destination as? GraphViewController {
+            vc.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+            vc.navigationItem.leftItemsSupplementBackButton = true
             prepareGraphVC(vc)
         }
+    }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "ShowGraph" {
+            return !brain.evaluate().isPending
+        }
+        return false
     }
     
     
