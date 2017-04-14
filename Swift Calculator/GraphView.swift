@@ -41,16 +41,17 @@ class GraphView: UIView {
         let pixelIncrementor = 1 / Double(pointsPerUnit * contentScaleFactor)
         
         var origin: CGPoint? = nil
-        for i in stride(from: -(unitsOnXAxis / 2), through: (unitsOnXAxis / 2), by: pixelIncrementor) {
-            let value = yForX?(i) ?? 0
-            let nextCoordinatePoint = CGPoint(x: boundsCenter.x + (CGFloat(i) * pointsPerUnit), y: boundsCenter.y - (CGFloat(value) * pointsPerUnit))
-            
-            if origin != nil {
-                path.move(to: CGPoint(x: origin!.x, y: origin!.y))
-                path.addLine(to: nextCoordinatePoint)
-                origin = nextCoordinatePoint
-            } else {
-                origin = nextCoordinatePoint
+        for x in stride(from: -(unitsOnXAxis / 2), through: (unitsOnXAxis / 2), by: pixelIncrementor) {
+            if yForX != nil, let y = yForX!(x) {
+                let nextCoordinatePoint = CGPoint(x: boundsCenter.x + (CGFloat(x) * pointsPerUnit), y: boundsCenter.y - (CGFloat(y) * pointsPerUnit))
+                
+                if origin != nil {
+                    path.move(to: CGPoint(x: origin!.x, y: origin!.y))
+                    path.addLine(to: nextCoordinatePoint)
+                    origin = nextCoordinatePoint
+                } else {
+                    origin = nextCoordinatePoint
+                }
             }
         }
         path.lineWidth = lineWidth

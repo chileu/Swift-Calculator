@@ -501,7 +501,7 @@
             </objects>
             <point key="canvasLocation" x="1272.8" y="-258.62068965517244"/>
         </scene>
-        <!--Graph View Controller-->
+        <!--Graph View-->
         <scene sceneID="BPT-3h-cUX">
             <objects>
                 <viewController id="TOr-vm-gvb" customClass="GraphViewController" customModule="Swift_Calculator" customModuleProvider="target" sceneMemberID="viewController">
@@ -526,7 +526,7 @@
                             <constraint firstItem="dm5-tF-BNg" firstAttribute="leading" secondItem="jW3-Rc-qPY" secondAttribute="leading" id="sJN-eu-VHx"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="haW-t6-02Q"/>
+                    <navigationItem key="navigationItem" title="Graph View" id="haW-t6-02Q"/>
                     <connections>
                         <outlet property="graphView" destination="dm5-tF-BNg" id="D7n-eR-WmN"/>
                     </connections>
