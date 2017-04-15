@@ -31,15 +31,15 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-yD-NOr">
                                                 <rect key="frame" x="0.0" y="0.0" width="319" height="38.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Memory" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="5sj-lw-WtY">
-                                                        <rect key="frame" x="0.0" y="0.0" width="73.5" height="38.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Memory" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="5sj-lw-WtY">
+                                                        <rect key="frame" x="0.0" y="0.0" width="159.5" height="38.5"/>
                                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Epb-Hv-0L9">
-                                                        <rect key="frame" x="73.5" y="0.0" width="245.5" height="38.5"/>
+                                                        <rect key="frame" x="159.5" y="0.0" width="159.5" height="38.5"/>
                                                         <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -50,7 +50,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPs-m1-xUO">
                                                 <rect key="frame" x="0.0" y="43.5" width="319" height="38.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="Display Error Message" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="xYk-s1-bKX">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="Display Error Message" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="xYk-s1-bKX">
                                                         <rect key="frame" x="0.0" y="0.0" width="159.5" height="38.5"/>
                                                         <color key="backgroundColor" red="0.0" green="0.75686274509999996" blue="0.63529411759999999" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -598,6 +598,7 @@
                     <connections>
                         <outlet property="display" destination="PYw-j4-taL" id="THg-nw-J81"/>
                         <outlet property="errorLbl" destination="xYk-s1-bKX" id="jv9-Pj-Akt"/>
+                        <outlet property="graphBtn" destination="aMc-zV-XKb" id="P9R-q3-2eZ"/>
                         <outlet property="memoryLbl" destination="5sj-lw-WtY" id="eMC-bO-Hcn"/>
                         <outlet property="sequence" destination="Epb-Hv-0L9" id="C8y-KK-l1b"/>
                     </connections>

@@ -14,6 +14,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     @IBOutlet weak var sequence: UILabel!
     @IBOutlet weak var memoryLbl: UILabel!
     @IBOutlet weak var errorLbl: UILabel!
+    @IBOutlet weak var graphBtn: UIButton!
     
     var userIsInTheMiddleOfTyping = false
     private var brain = CalculatorBrain()
@@ -91,6 +92,8 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         }
         
         displayResult = brain.evaluate(using: variableDictionary)
+        graphBtn.isEnabled = displayResult.isPending ? false : true
+        graphBtn.alpha = displayResult.isPending ? 0.25 : 1
     }
     
     // ->M button pressed
