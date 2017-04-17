@@ -9,7 +9,7 @@
 import Foundation
 
 struct CalculatorBrain {
-    
+
     private var internalProgram = [OpStack]()
     
     private enum OpStack {

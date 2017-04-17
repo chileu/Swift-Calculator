@@ -149,7 +149,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     }
     
     func prepareGraphVC(_ graphVC: GraphViewController) {
-        graphVC.yForX = { [ weak weakSelf = self] x in
+        graphVC.yForX = { [weak weakSelf = self] x in
             weakSelf?.variableDictionary["M"] = x
             return weakSelf?.brain.evaluate(using: weakSelf?.variableDictionary).result
         }
@@ -158,11 +158,11 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var destination = segue.destination
-        if let navigationController = destination as? UINavigationController {
-            destination = navigationController.visibleViewController ?? destination
-        }
-        if let identifier = segue.identifier, identifier == "ShowGraph", let vc = destination as? GraphViewController {
+        let destination = segue.destination
+//        if let navigationController = destination as? UINavigationController {
+//            destination = navigationController.visibleViewController ?? destination
+//        }
+        if let identifier = segue.identifier, identifier == "ShowGraph", let vc = destination.contentViewController as? GraphViewController {
             vc.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             vc.navigationItem.leftItemsSupplementBackButton = true
             prepareGraphVC(vc)
@@ -176,6 +176,15 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         return false
     }
     
-    
+}
+
+extension UIViewController {
+    var contentViewController: UIViewController {
+        if let navigationController = self as? UINavigationController {
+            return navigationController.visibleViewController ?? self
+        } else {
+            return self
+        }
+    }
 }
 
